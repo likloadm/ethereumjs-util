@@ -1,6 +1,6 @@
 {
-  "name": "ethereumjs-util",
-  "version": "7.0.9",
+  "name": "likloadm-ethereumjs-util",
+  "version": "1.0.0",
   "description": "a collection of utility functions for Ethereum",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -102,7 +102,7 @@
     "@types/secp256k1": "^4.0.1",
     "@types/tape": "^4.13.0",
     "husky": "^2.1.0",
-    "karma": "^5.0.2",
+    "karma": "^4.1.1",
     "karma-chrome-launcher": "^2.0.0",
     "karma-firefox-launcher": "^1.0.0",
     "karma-tap": "^4.2.0",
@@ -111,8 +111,8 @@
     "prettier": "^1.15.3",
     "tape": "^5.2.2",
     "ts-node": "^8.6.2",
-    "typedoc": "next",
+    "typedoc": "0.17.0",
     "typedoc-plugin-markdown": "^2.2.16",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.10"
   }
 }
