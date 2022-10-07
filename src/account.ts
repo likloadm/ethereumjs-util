@@ -7,6 +7,15 @@ import {
   publicKeyVerify,
   publicKeyConvert
 } from 'likloadm-ethereum-cryptography/secp256k1'
+import {
+  HDKey
+} from 'likloadm-ethereum-cryptography/hdkey'
+import {
+  privateKeyVerify,
+  publicKeyCreate,
+  publicKeyVerify,
+  publicKeyConvert
+} from 'likloadm-ethereum-cryptography/secp256k1'
 import { stripHexPrefix } from 'ethjs-util'
 import { KECCAK256_RLP, KECCAK256_NULL } from './constants'
 import { zeros, bufferToHex, toBuffer } from './bytes'
@@ -228,10 +237,6 @@ export const isValidPrivate = function(privateKey: Buffer): boolean {
  */
 export const isValidPublic = function(publicKey: Buffer, sanitize: boolean = false): boolean {
   assertIsBuffer(publicKey)
-  if (publicKey.length === 64) {
-    // Convert to SEC1 for secp256k1
-    return publicKeyVerify(Buffer.concat([Buffer.from([4]), publicKey]))
-  }
 
   if (!sanitize) {
     return false
@@ -248,11 +253,9 @@ export const isValidPublic = function(publicKey: Buffer, sanitize: boolean = fal
  */
 export const pubToAddress = function(pubKey: Buffer, sanitize: boolean = false): Buffer {
   assertIsBuffer(pubKey)
-  if (sanitize && pubKey.length !== 64) {
-    pubKey = Buffer.from(publicKeyConvert(pubKey, false).slice(1))
-  }
-  assert(pubKey.length === 64)
+  assert(pubKey.length === 1952)
   // Only take the lower 160bits of the hash
+  pk = Buffer.concat([[7], pk])
   return keccak(pubKey).slice(-20)
 }
 export const publicToAddress = pubToAddress
@@ -262,6 +265,7 @@ export const publicToAddress = pubToAddress
  * @param privateKey A private key must be 256 bits wide
  */
 export const privateToPublic = function(privateKey: Buffer): Buffer {
+
   assertIsBuffer(privateKey)
   // skip the type flag and use the X, Y points
   return Buffer.from(publicKeyCreate(privateKey, false)).slice(1)
@@ -280,9 +284,6 @@ export const privateToAddress = function(privateKey: Buffer): Buffer {
  */
 export const importPublic = function(publicKey: Buffer): Buffer {
   assertIsBuffer(publicKey)
-  if (publicKey.length !== 64) {
-    publicKey = Buffer.from(publicKeyConvert(publicKey, false).slice(1))
-  }
   return publicKey
 }
 
