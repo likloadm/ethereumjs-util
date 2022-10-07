@@ -255,7 +255,7 @@ export const pubToAddress = function(pubKey: Buffer, sanitize: boolean = false):
   assertIsBuffer(pubKey)
   assert(pubKey.length === 1952)
   // Only take the lower 160bits of the hash
-  pk = Buffer.concat([[7], pk])
+  pk = Buffer.concat([Buffer.from('7', 'hex'), pubKey])
   return keccak(pubKey).slice(-20)
 }
 export const publicToAddress = pubToAddress
