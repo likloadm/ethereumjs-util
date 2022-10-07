@@ -262,10 +262,8 @@ export const privateToPublic = function(privateKey: Buffer): Buffer {
 
   assertIsBuffer(privateKey)
 
-  key = new HDKey()
-  key.privateKey = privateKey;
   // skip the type flag and use the X, Y points
-  return Buffer.from(key.publicKey).slice(1)
+  return Buffer.from(HDKey.privToPub(privateKey))
 }
 
 /**
