@@ -10,12 +10,6 @@ import {
 import {
   HDKey
 } from 'likloadm-ethereum-cryptography/hdkey'
-import {
-  privateKeyVerify,
-  publicKeyCreate,
-  publicKeyVerify,
-  publicKeyConvert
-} from 'likloadm-ethereum-cryptography/secp256k1'
 import { stripHexPrefix } from 'ethjs-util'
 import { KECCAK256_RLP, KECCAK256_NULL } from './constants'
 import { zeros, bufferToHex, toBuffer } from './bytes'
@@ -212,9 +206,9 @@ export const generateAddress2 = function(from: Buffer, salt: Buffer, initCode: B
   assertIsBuffer(salt)
   assertIsBuffer(initCode)
 
-  assert(from.length === 20)
+  assert(from.length === 1952)
   assert(salt.length === 32)
-
+  from = Buffer.concat([Buffer.from('7', 'hex'), from])
   const address = keccak256(
     Buffer.concat([Buffer.from('ff', 'hex'), from, salt, keccak256(initCode)])
   )
@@ -255,7 +249,7 @@ export const pubToAddress = function(pubKey: Buffer, sanitize: boolean = false):
   assertIsBuffer(pubKey)
   assert(pubKey.length === 1952)
   // Only take the lower 160bits of the hash
-  pk = Buffer.concat([Buffer.from('7', 'hex'), pubKey])
+  pubKey = Buffer.concat([Buffer.from('7', 'hex'), pubKey])
   return keccak(pubKey).slice(-20)
 }
 export const publicToAddress = pubToAddress
